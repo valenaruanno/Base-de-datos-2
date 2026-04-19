@@ -1,14 +1,20 @@
 package unlp.info.bd2.model;
 
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@DiscriminatorValue("GUIDE")
 public class TourGuideUser extends User {
 
+    @Column(nullable = false)
     private String education;
 
+    @ManyToMany(mappedBy = "tourGuideList")
     private List<Route> routes;
 
 
@@ -28,4 +34,11 @@ public class TourGuideUser extends User {
         this.routes = routes;
     }
 
+    public void addRoute(Route route) {
+        this.routes.add(route);
+    }
+
+    public boolean canBeDesactive(){
+        return super.canBeDesactive();
+    }
 }

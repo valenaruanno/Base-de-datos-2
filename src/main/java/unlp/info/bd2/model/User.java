@@ -1,27 +1,42 @@
 package unlp.info.bd2.model;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@Table(name = "user")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String username;
 
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private Date birthdate;
 
+    @Column(nullable = false)
     private String phoneNumber;
 
     private boolean active;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Purchase> purchaseList;
 
 
@@ -89,11 +104,17 @@ public class User {
         this.purchaseList = purchaseList;
     }
 
-    public boolean isActive() {
-        return active;
-    }
+    public boolean isActive() {return active;}
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public void addPurchase(Purchase p){
+        this.purchaseList.add(p);
+    }
+
+    public boolean canBeDesactive(){
+        return this.active;
     }
 }

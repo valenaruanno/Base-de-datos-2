@@ -1,14 +1,23 @@
 package unlp.info.bd2.model;
 
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "review")
 public class Review {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Column(nullable = false)
     private int rating;
 
     private String comment;
 
+    //Sin cascade ya que borrar una review podria borrar un Purchase
+    @OneToOne(optional = false)
+    @JoinColumn(name = "purchase_id", nullable = false, unique = true)
     private Purchase purchase;
 
 
