@@ -16,7 +16,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User createUser(User user) {
-        sessionFactory.getCurrentSession().save(user);
+        sessionFactory.getCurrentSession().persist(user);
         return user;
     }
 
@@ -31,10 +31,19 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public User findUserByUsername(String username) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("FROM User u WHERE u.username = :username and u.active = true", User.class)
+                .setParameter("username", username)
+                .setMaxResults(1)
+                .uniqueResult();
+    }
+
+    @Override
     public void deleteUser(long id) {
         User user = findUser(id);
         if (user != null) {
-            sessionFactory.getCurrentSession().delete(user);
+            user.setActive(false);
         }
     }
 
@@ -50,5 +59,9 @@ public class UserRepositoryImpl implements UserRepository {
         return sessionFactory.getCurrentSession().createQuery("SELECT DISTINCT p.user FROM Review r JOIN r.purchase p WHERE r.rating = 1 AND TYPE(p.user) = TourGuideUser", TourGuideUser.class)
                 .list();
     }
-}
 
+    @Override
+    public User updateUser(User user) {
+        return sessionFactory.getCurrentSession().merge(user);
+    }
+}

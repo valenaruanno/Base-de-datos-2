@@ -15,7 +15,7 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 
     @Override
     public Review createReview(Review review) {
-        sessionFactory.getCurrentSession().save(review);
+        sessionFactory.getCurrentSession().persist(review);
         return review;
     }
 

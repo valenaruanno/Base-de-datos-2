@@ -110,23 +110,40 @@ public class ToursServiceImpl implements ToursService{
     }
 
     @Override
-    public Optional<User> getUserById(Long id) throws ToursException {
-        return Optional.empty();
+    public User getUserById(Long id) throws ToursException {
+        User u = userRepository.findUser(id);
+        if (u == null) {
+            throw new ToursException("El usuario no existe");
+        }
+        return u;
     }
 
     @Override
-    public Optional<User> getUserByUsername(String username) throws ToursException {
-        return Optional.empty();
+    public User getUserByUsername(String username) throws ToursException {
+        User u = userRepository.findUserByUsername(username);
+        if  (u == null) {
+            throw new ToursException("El usuario no existe");
+        }
+        return u;
     }
 
     @Override
     public User updateUser(User user) throws ToursException {
-        return null;
+        if (userRepository.findUser(user.getId()) == null) {
+            throw new ToursException("El usuario no existe");
+        }
+        return userRepository.updateUser(user);
     }
 
     @Override
     public void deleteUser(User user) throws ToursException {
-
+        if (user == null) {
+            throw new ToursException("El usuario no puede ser nulo");
+        }
+        if (user.getId() == null) {
+            throw new ToursException("El usuario no tiene identificador");
+        }
+        userRepository.deleteUser(user.getId());
     }
 
     @Override

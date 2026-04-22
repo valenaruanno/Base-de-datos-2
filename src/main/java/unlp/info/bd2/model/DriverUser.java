@@ -9,7 +9,6 @@ import jakarta.persistence.ManyToMany;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue("DRIVER")
 public class DriverUser extends User {
 
     @Column(nullable = false)

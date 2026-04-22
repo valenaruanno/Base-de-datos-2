@@ -15,6 +15,8 @@ import unlp.info.bd2.config.HibernateConfiguration;
 import unlp.info.bd2.services.ToursService;
 import unlp.info.bd2.utils.ToursException;
 import unlp.info.bd2.model.*;
+
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -61,19 +63,19 @@ class ToursApplicationTests {
 		assertNotNull(driverUser1.getId());
 		TourGuideUser tourGuideUser1 = this.toursService.createTourGuideUser("userG", "1234", "Usuario TourGuide", "userg@gmail.com", dob2, "000111222555", "edu...");
 		assertNotNull(tourGuideUser1.getId());
+		//user1.addPurchase(new Purchase());
 
-		Optional<User> opUserFromDB = this.toursService.getUserById(user1.getId());
-		assertTrue(opUserFromDB.isPresent());
-		User user = opUserFromDB.get();
+		User user = this.toursService.getUserById(user1.getId());
+		assertNotNull(user);
 		assertEquals(user1.getId(), user.getId());
 		assertEquals("user1", user.getUsername());
 		assertEquals("Usuario Uno", user.getName());
 		assertEquals("user1@gmail.com", user.getEmail());
 		assertTrue(user.getPurchaseList().isEmpty());
 
-		Optional<User> opUserFromDB2 = this.toursService.getUserByUsername("userD");
-		assertTrue(opUserFromDB2.isPresent());
-		DriverUser driverUser = (DriverUser) opUserFromDB2.get();
+		User opUserFromDB2 = this.toursService.getUserByUsername("userD");
+		assertNotNull(opUserFromDB2);
+		DriverUser driverUser = (DriverUser) opUserFromDB2;
 		assertEquals(driverUser.getId(), driverUser1.getId());
 		assertEquals(driverUser.getExpedient(), "exp...");
 
@@ -99,11 +101,11 @@ class ToursApplicationTests {
 
 		user1.setUsername("user2");
 		this.toursService.updateUser(user1);
-		Optional<User> opUserFromDB = this.toursService.getUserByUsername("user2");
-		assertTrue(opUserFromDB.isEmpty());
-		Optional<User> opUnmodifiedUserFromDB = this.toursService.getUserByUsername("user1");
-		assertTrue(opUnmodifiedUserFromDB.isPresent());
-		User unmodifiedUserFromDB = opUnmodifiedUserFromDB.get();
+		User opUserFromDB = this.toursService.getUserByUsername("user2");
+		assertNotNull(opUserFromDB);
+		User opUnmodifiedUserFromDB = this.toursService.getUserByUsername("user1");
+		assertNotNull(opUnmodifiedUserFromDB);
+		User unmodifiedUserFromDB = opUnmodifiedUserFromDB;
 		assertEquals(unmodifiedUserFromDB.getId(), user1.getId());
 	}
 
@@ -175,6 +177,7 @@ class ToursApplicationTests {
 		assertNotNull(service1.getId());
 		assertEquals("Servicio1", service1.getName());
 		assertEquals(supplier1.getId(), service1.getSupplier().getId());
+		supplier1.addService(service1);
 		assertEquals(supplier1.getServices().get(0).getId(), service1.getId());
 
 		Optional<Supplier> optionalSupplier1 = this.toursService.getSupplierById(supplier1.getId());
@@ -314,7 +317,7 @@ class ToursApplicationTests {
 
 		assertTrue(user1.isActive());
 		this.toursService.deleteUser(user1);
-		assertTrue(this.toursService.getUserByUsername("user1").isEmpty());
+		assertThrows(ToursException.class, () -> this.toursService.getUserByUsername("user1"));
 
 		User user2 = this.toursService.createUser("user2", "1234", "Usuario Dos", "user2@gmail.com", dob2, "000111222334");
 		Stop stop1 = this.toursService.createStop("Estadio Monumental", "Estadio de River Plate");
@@ -325,9 +328,9 @@ class ToursApplicationTests {
 		this.toursService.createPurchase("100", dyes, route1, user2);
 		assertTrue(user2.isActive());
 		this.toursService.deleteUser(user2);
-		Optional<User> optionalUser2 = this.toursService.getUserByUsername("user2");
-		assertTrue(optionalUser2.isPresent());
-		User user2b = optionalUser2.get();
+		User optionalUser2 = this.toursService.getUserByUsername("user2");
+		assertNotNull(optionalUser2);
+		User user2b = optionalUser2;
 		assertFalse(user2b.isActive());
 
 		assertThrows(ToursException.class, () -> this.toursService.deleteUser(user2b), "El usuario se encuentra desactivado");
