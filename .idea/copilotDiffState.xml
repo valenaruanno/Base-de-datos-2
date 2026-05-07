@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/src/main/java/unlp/info/bd2/repositories/PurchaseRepository.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/main/java/unlp/info/bd2/repositories/PurchaseRepository.java" />
+              <option name="originalContent" value="package unlp.info.bd2.repositories;&#10;&#10;import org.springframework.data.domain.Page;&#10;import org.springframework.data.jpa.repository.JpaRepository;&#10;import org.springframework.data.repository.CrudRepository;&#10;import unlp.info.bd2.model.Purchase;&#10;&#10;import java.util.Date;&#10;import java.util.List;&#10;&#10;public interface PurchaseRepository extends JpaRepository&lt;Purchase, Integer&gt; {&#10;    List&lt;Purchase&gt; getPurchasesByRouteId(Long id);&#10;    Page&lt;Purchase&gt; findByUsername(String username, Page pageable);&#10;    int countByDateBetween (Date from, Date to);&#10;}&#10;&#10;" />
+              <option name="updatedContent" value="    Page&lt;Purchase&gt; findByUsername(String username, Page pageable);&#10;package unlp.info.bd2.repositories;&#10;&#10;import org.springframework.data.domain.Page;&#10;import org.springframework.data.domain.Pageable;&#10;import org.springframework.data.jpa.repository.JpaRepository;&#10;import org.springframework.data.repository.CrudRepository;&#10;import unlp.info.bd2.model.Purchase;&#10;&#10;import java.util.Date;&#10;import java.util.List;&#10;&#10;public interface PurchaseRepository extends JpaRepository&lt;Purchase, Integer&gt; {&#10;    List&lt;Purchase&gt; getPurchasesByRouteId(Long id);&#10;    // Busca las compras por el username del usuario asociado (propiedad nested &quot;user.username&quot;)&#10;    Page&lt;Purchase&gt; findByUserUsername(String username, Pageable pageable);&#10;    int countByDateBetween (Date from, Date to);&#10;}&#10;&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

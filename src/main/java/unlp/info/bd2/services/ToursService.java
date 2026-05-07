@@ -1,4 +1,6 @@
 package unlp.info.bd2.services;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import unlp.info.bd2.model.*;
 import unlp.info.bd2.utils.ToursException;
 
@@ -38,15 +40,15 @@ public interface ToursService {
     void deleteRoute(Route route) throws ToursException;
 
     // CONSULTAS HQL
-    List<Purchase> getAllPurchasesOfUsername(String username);
-    List<User> getUserSpendingMoreThan(float mount);
-    List<Supplier> getTopNSuppliersInPurchases(int n);
+    Page<Purchase> getAllPurchasesOfUsername(String username, Pageable pageable);
+    Page<User> getUserSpendingMoreThan(float mount, Pageable pageable);
+    Page<Supplier> getTopNSuppliersInPurchases(int n);
     long getCountOfPurchasesBetweenDates(Date start, Date end);
-    List<Route> getRoutesWithStop(Stop stop);
+    Page<Route> getRoutesWithStop(Stop stop, Pageable pageable);
     Long getMaxStopOfRoutes();
-    List<Route> getRoutsNotSell();
-    List<Route> getTop3RoutesWithMaxRating();
+    Page<Route> getRoutsNotSell(Pageable pageable);
+    Page<Route> getTop3RoutesWithMaxRating();
     Service getMostDemandedService();
-    List<TourGuideUser> getTourGuidesWithRating1();
+    List<TourGuideUser> getTourGuidesWithRating1(Pageable pageable);
 
 }

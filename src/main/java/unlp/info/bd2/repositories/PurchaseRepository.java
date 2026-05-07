@@ -1,17 +1,16 @@
 package unlp.info.bd2.repositories;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import unlp.info.bd2.model.Purchase;
 
 import java.util.Date;
 import java.util.List;
 
-public interface PurchaseRepository {
-    public Purchase createPurchase(Purchase purchase);
-    public Purchase findPurchase(long id);
-    public List<Purchase> findPurchases();
-    public void deletePurchase(long id);
+public interface PurchaseRepository extends JpaRepository<Purchase, Integer> {
     List<Purchase> getPurchasesByRouteId(Long id);
-    List<Purchase> getAllPurchasesOfUsername(String username);
-    int getCountOfPurchasesBetweenDates (Date start, Date end);
+    Page<Purchase> findAllByUserUsername(String username, Pageable pageable);
+    long countAllByDateBetween (Date from, Date to);
 }
 
