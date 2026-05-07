@@ -49,6 +49,6 @@ public interface ToursService {
     Page<Route> getRoutsNotSell(Pageable pageable);
     Page<Route> getTop3RoutesWithMaxRating();
     Service getMostDemandedService();
-    List<TourGuideUser> getTourGuidesWithRating1(Pageable pageable);
+    Page<TourGuideUser> getTourGuidesWithRating1(Pageable pageable);
 
 }
